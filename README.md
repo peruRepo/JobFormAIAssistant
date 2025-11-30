@@ -11,6 +11,8 @@ This project lives under `JobFormAIAssistant/` and provides a popup-driven brows
 
 ## Daily Workflow
 
+![Provider selection and context input](images/first.png)
+
 1. Open the job application page you want to fill.
 2. Click the extension icon to open the popup.
 3. Press **Fetch Fields** to scan the active tab; the popup shows the number of pages and fields captured so far.
@@ -19,6 +21,8 @@ This project lives under `JobFormAIAssistant/` and provides a popup-driven brows
 6. Hit **Process with AI**; check the live log section for request/response status.
 7. If the suggestions look reasonable, click **Apply Suggested Values** to update the active tab. If not, tweak the context or try a different provider—nothing is auto-submitted.
 8. Use **Download JSON** to export the collected field schema for later reuse, or **Fill From JSON** to load a template back into the workflow.
+
+![Action buttons, apply, and status](images/second.png)
 
 ### Resume Context Guidance
 
