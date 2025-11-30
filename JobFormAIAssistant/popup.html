@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Fetcher</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Job Form AI Assistant</h1>
+      <p>Capture & Auto-Fill</p>
+    </header>
+
+    <div class="control-group">
+      <label for="providerSelect">AI Provider</label>
+      <select id="providerSelect">
+        <option value="OLLAMA">Ollama (Local)</option>
+        <option value="OPENAI">OpenAI</option>
+        <option value="GEMINI">Gemini</option>
+      </select>
+    </div>
+
+    <div class="control-group hidden" id="providerSecrets">
+      <label for="apiKeyInput">Provider API Key</label>
+      <div class="api-key-row">
+        <input type="password" id="apiKeyInput" placeholder="Enter API key" autocomplete="off" />
+        <button id="saveApiKeyBtn" class="btn secondary small" type="button">Save</button>
+      </div>
+      <span id="apiKeyStatus" class="hint-text">Key not set.</span>
+    </div>
+
+    <div class="control-group">
+      <label for="resumeContextInput">Resume Context (key: value pairs)</label>
+      <textarea id="resumeContextInput" rows="5"
+        placeholder="Provide each detail on its own line using key: value pairs.
+Example:
+First Name: Jane Doe
+Email: jane.doe@example.com"></textarea>
+      <div class="resume-actions">
+        <button id="loadResumeBtn" class="btn secondary small" type="button">Load Default Resume</button>
+        <span class="hint-text">Use colon-separated key/value lines (e.g., First Name: Jane Doe). Saved locally and only sent to AI during processing.</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="button-group">
+        <button id="fetchBtn" class="btn primary">
+          <span class="icon">🔍</span> Fetch
+        </button>
+        <button id="aiProcessBtn" class="btn accent">
+          <span class="icon">🤖</span> AI Process
+        </button>
+      </div>
+
+      <div class="button-group">
+        <button id="fillJsonBtn" class="btn secondary">
+          <span class="icon">📤</span> Fill JSON
+        </button>
+      </div>
+
+      <div class="button-group hidden" id="postProcessActions">
+        <button id="applyBtn" class="btn success">
+          <span class="icon">✍️</span> Apply to Page
+        </button>
+        <button id="downloadBtn" class="btn secondary">
+          <span class="icon">💾</span> Download JSON
+        </button>
+      </div>
+
+      <input type="file" id="jsonFileInput" accept="application/json" class="hidden" />
+
+      <button id="resetFormBtn" class="btn warning">
+        <span class="icon">🧹</span> Reset Form Fields
+      </button>
+
+      <button id="clearBtn" class="btn danger">
+        <span class="icon">🗑️</span> Clear Data
+      </button>
+    </div>
+
+    <div class="status-card">
+      <h3>Session Status</h3>
+      <div class="stat-row">
+        <span>Pages Scraped:</span>
+        <span id="pageCount" class="badge">0</span>
+      </div>
+      <div class="stat-row">
+        <span>Total Fields:</span>
+        <span id="fieldCount" class="badge">0</span>
+      </div>
+      <div id="messageArea" class="message hidden"></div>
+    </div>
+
+    <div class="log-card">
+      <div class="log-header">
+        <h3>Live Logs</h3>
+        <button id="clearLogBtn" class="btn secondary">Clear</button>
+      </div>
+      <pre id="logOutput" class="log-output">Waiting for activity...</pre>
+    </div>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+
+</html>
