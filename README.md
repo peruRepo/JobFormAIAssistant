@@ -14,7 +14,7 @@ This project lives under `JobFormAIAssistant/` and provides a popup-driven brows
 1. Open the job application page you want to fill.
 2. Click the extension icon to open the popup.
 3. Press **Fetch Fields** to scan the active tab; the popup shows the number of pages and fields captured so far.
-4. Paste your resume context (see below) or click **Load Resume** to pull in the bundled `resume.txt`.
+4. Paste your resume context (see below) or click **Load Default Resume** if you want the sample template pre-filled in the textarea.
 5. Choose an AI provider (Ollama, OpenAI, Gemini) and save the API key when needed.
 6. Hit **Process with AI**; check the live log section for request/response status.
 7. If the suggestions look reasonable, click **Apply Suggested Values** to update the active tab. If not, tweak the context or try a different provider—nothing is auto-submitted.
@@ -22,10 +22,12 @@ This project lives under `JobFormAIAssistant/` and provides a popup-driven brows
 
 ### Resume Context Guidance
 
-* Plain text is enough—bullets or paragraphs; no need for JSON.
-* Include skills, experience snippets, location preference, citizenship, and any standard Q&A you expect to face.
-* The text is stored in `chrome.storage.local` (`resumeContext`) so you only paste it once per browser profile.
-* For deterministic results, keep the context concise but specific; avoid inconsistent date ranges or job titles.
+* Use a simple key-value list separated by colons, e.g., `first_name: Ada`, `experience_years: 4`, `preferred_location: Remote`.
+* Formatting is flexible—single lines or paragraphs work—as long as each key/value pair stays readable for the AI.
+* Include the fields you usually encounter (skills, eligibility, salary expectations, citizenship, etc.) so the AI can map them quickly.
+* Copy/paste your custom context directly into the popup textarea; there is no external file to load. The **Load Default Resume** button only injects the bundled sample for inspiration.
+* The text persists in `chrome.storage.local` (`resumeContext`), so you only need to paste it once per browser profile.
+* For consistent results, keep the context concise but specific; avoid conflicting answers for the same key.
 
 ### Field JSON Templates
 
@@ -54,9 +56,10 @@ Keep that structure if you want to hand-edit or version-control templates.
 | OpenAI | Cloud (`https://api.openai.com/v1/chat/completions`) | `config.js` (`CONFIG.OPENAI`) | saved via `token_manager.js` |
 | Gemini | Cloud (`https://generativelanguage.googleapis.com/...`) | `config.js` (`CONFIG.GEMINI`) | saved via `token_manager.js` |
 
-* To switch defaults edit `CONFIG.SELECTED_PROVIDER` or the `MODEL` values inside `config.js`.
-* API keys are written to `chrome.storage.local` under the `providerTokens` object. They never leave your machine except when you invoke the corresponding AI request.
-* To add a new provider: extend `CONFIG`, implement an `askYourProvider` helper in `ai_interaction.js`, hook it into `getSuggestedValues`, and expose the new option in the popup dropdown + token form.
+* The popup lets you select any of the available models; if the provider requires a token, paste it into the API-key box right below and hit **Save**—the key is stored locally per provider.
+* To change defaults, edit `CONFIG.SELECTED_PROVIDER` or the `MODEL` values inside `config.js`.
+* Only these three providers ship today, but you can add more by extending `CONFIG`, creating a matching `askYourProvider` routine in `ai_interaction.js`, wiring it into `getSuggestedValues`, and exposing the provider/token inputs in `popup.html`/`popup.js`.
+* API keys are written to `chrome.storage.local` under `providerTokens` and never leave your machine unless you call the corresponding AI API.
 
 ## Data Storage & Privacy
 
